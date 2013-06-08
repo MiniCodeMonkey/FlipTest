@@ -14,5 +14,6 @@
 + (id)currentFlipTest;
 - (void)goAhead:(NSString*)userToken;
 - (void)registerController:(UIViewController*)viewController;
+- (void)viewAppeared:(UIViewController*)viewController;
 
 @end

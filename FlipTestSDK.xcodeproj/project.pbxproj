@@ -11,6 +11,7 @@
 		3D1E0D1617639C0D00682E5A /* FlipTest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D1E0D1517639C0D00682E5A /* FlipTest.h */; };
 		3D1E0D1817639C0D00682E5A /* FlipTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E0D1717639C0D00682E5A /* FlipTest.m */; };
 		3D1E0D2617639FB300682E5A /* UIViewController+Inject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E0D2517639FB300682E5A /* UIViewController+Inject.m */; };
+		3DA70F181763DDF500F45C24 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA70F171763DDF500F45C24 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,7 @@
 		3D1E0D1717639C0D00682E5A /* FlipTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlipTest.m; sourceTree = "<group>"; };
 		3D1E0D2417639FB300682E5A /* UIViewController+Inject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Inject.h"; sourceTree = "<group>"; };
 		3D1E0D2517639FB300682E5A /* UIViewController+Inject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Inject.m"; sourceTree = "<group>"; };
+		3DA70F171763DDF500F45C24 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DA70F181763DDF500F45C24 /* QuartzCore.framework in Frameworks */,
 				3D1E0D1117639C0D00682E5A /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,6 +54,7 @@
 		3D1E0D0417639C0D00682E5A = {
 			isa = PBXGroup;
 			children = (
+				3DA70F171763DDF500F45C24 /* QuartzCore.framework */,
 				3D1E0D1217639C0D00682E5A /* FlipTestSDK */,
 				3D1E0D0F17639C0D00682E5A /* Frameworks */,
 				3D1E0D0E17639C0D00682E5A /* Products */,

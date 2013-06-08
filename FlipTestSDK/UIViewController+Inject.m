@@ -21,9 +21,17 @@ void MethodSwizzle(Class c, SEL origSEL, SEL overrideSEL);
     [[FlipTest currentFlipTest] registerController:self];
 }
 
+- (void)override_viewWillAppear:(BOOL)animated {
+    
+    [self override_viewWillAppear:animated];
+    
+    [[FlipTest currentFlipTest] viewAppeared:self];
+}
+
 + (void)load
 {
     MethodSwizzle(self, @selector(viewDidLoad), @selector(override_viewDidLoad));
+    MethodSwizzle(self, @selector(viewDidAppear:), @selector(override_viewWillAppear:));
 }
 
 
