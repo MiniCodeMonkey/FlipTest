@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3D1EDBC91763942100A78DD0"
-               BuildableName = "libiOS-AB-Testing-Framework.a"
-               BlueprintName = "iOS-AB-Testing-Framework"
-               ReferencedContainer = "container:iOS-AB-Testing-Framework.xcodeproj">
+               BlueprintIdentifier = "3D1E0D0C17639C0D00682E5A"
+               BuildableName = "libFlipTestSDK.a"
+               BlueprintName = "FlipTestSDK"
+               ReferencedContainer = "container:FlipTestSDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

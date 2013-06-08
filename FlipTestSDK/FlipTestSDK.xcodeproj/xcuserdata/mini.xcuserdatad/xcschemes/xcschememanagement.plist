@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>iOS-AB-Testing-Framework.xcscheme</key>
+		<key>FlipTestSDK.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3D1EDBC91763942100A78DD0</key>
+		<key>3D1E0D0C17639C0D00682E5A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
