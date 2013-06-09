@@ -26,7 +26,7 @@ void MethodSwizzle(Class c, SEL origSEL, SEL overrideSEL);
     
     [self override_viewWillAppear:animated];
     
-    [[FlipTest currentFlipTest] viewAppeared:self];
+    [[FlipTest currentFlipTest] eventViewWillAppear:self];
 }
 
 + (void)load

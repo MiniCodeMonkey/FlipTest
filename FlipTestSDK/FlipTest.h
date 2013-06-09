@@ -17,7 +17,7 @@
 + (id)currentFlipTest;
 - (void)startFlipping:(NSString*)userToken;
 - (void)registerController:(UIViewController*)viewController;
-- (void)viewAppeared:(UIViewController*)viewController;
+- (void)eventViewWillAppear:(UIViewController*)viewController;
 - (NSDictionary*)testsForController:(UIViewController*)controller;
 
 @end

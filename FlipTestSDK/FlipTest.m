@@ -116,41 +116,6 @@
     if (![registeredControllers containsObject:viewController]) {
         [registeredControllers addObject:viewController];
     }
-    
-    // Existing controllers    
-    UIView *mainView = viewController.view;
-    
-    if (mainView) {
-        NSDictionary *mainViewDict = [self findSubviews:mainView siblingNo:0 parentId:@"0"];
-        
-        NSDictionary *controllerDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [viewController.class description], @"className",
-                                        mainViewDict, @"views",
-                                        //(viewController.parentViewController ? [viewController.parentViewController.class description] : @""), @"parentController",
-                                        nil];
-        
-        // View metadata
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSError *error;
-            
-            NSString *url = [NSString stringWithFormat:@"%@controller", kApiUrl];
-            
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-            [request setHTTPMethod:@"POST"];
-            [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:controllerDict options:0 error:&error]];
-            
-            NSURLResponse *response;
-            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-            if (error) {
-                // handle error
-                return;
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                NSLog(@"Return (%@): %@", url, str);
-            });
-        });
-    }
 }
 
 - (void)trackView:(NSString*)testId {
@@ -195,14 +160,65 @@
     });
 }
 
-- (void)viewAppeared:(UIViewController*)viewController {
+- (void)eventViewWillAppear:(UIViewController*)viewController {
     NSLog(@"Controller shown %@", [viewController description]);
     
+    if ([viewController isKindOfClass:[UINavigationController class]])
+        return;
+    
+    // Existing controllers
     UIView *mainView = viewController.view;
+    
+    if (mainView) {
+        NSDictionary *mainViewDict = [self findSubviews:mainView siblingNo:0 parentId:@"0"];
+        
+        NSDictionary *controllerDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        [viewController.class description], @"className",
+                                        mainViewDict, @"views",
+                                        (viewController.parentViewController ? [viewController.parentViewController.class description] : @""), @"parentController",
+                                        nil];
+        
+        // View metadata
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSError *error;
+            
+            NSString *url = [NSString stringWithFormat:@"%@controller", kApiUrl];
+            
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+            [request setHTTPMethod:@"POST"];
+            [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:controllerDict options:0 error:&error]];
+            
+            NSURLResponse *response;
+            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            if (error) {
+                // handle error
+                return;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"Return (%@): %@", url, str);
+            });
+        });
+    }
+    
+    /*
+     imageView
+     textLabel
+     detailsLabel
+    */
+    /*if ([viewController isKindOfClass:[UITableViewController class]]) {
+        for (UIView *subview in mainView.subviews) {
+            if ([subview isKindOfClass:[UITableViewCell class]]) {
+                UITableViewCell *cell = (UITableViewCell*)subview;
+                cell.sty
+            }
+        }
+    }*/
     
     if (mainView) {
         NSDictionary *tests = [[FlipTest currentFlipTest] testsForController:viewController];
         if ([tests count] > 0) {
+            NSLog(@"%d tests for controller", [tests count]);
             for (NSString *key in tests) {
                 NSDictionary *test = [tests objectForKey:key];
                 [self trackView:[test objectForKey:@"id"]];
@@ -216,7 +232,6 @@
 - (void)runTests:(NSDictionary*)tests onView:(UIView*)parentView siblingNo:(int)siblingNo parentId:(NSString*)parentId {
     
     NSString *viewIdentifier = [parentId stringByAppendingFormat:@".%d", siblingNo];
-    
     
     if ([parentView isKindOfClass:[UIButton class]]) {
         // Figure out if a test has this button as a conversion goal
