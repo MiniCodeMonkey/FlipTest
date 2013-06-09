@@ -12,6 +12,7 @@
 
 #import "FlipTest.h"
 #import "UIColor+Hex.h"
+#import "UIButton+Block.h"
 
 @implementation FlipTest
 
@@ -173,6 +174,27 @@
     });
 }
 
+- (void)trackGoal:(NSString*)testId {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError *error;
+        
+        NSString *url = [NSString stringWithFormat:@"%@tests/%@/goal?user=%@", kApiUrl, testId, [[[NSUserDefaults standardUserDefaults] objectForKey:@"fliptest_identifier"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+        
+        NSURLResponse *response;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        if (error) {
+            // handle error
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"Return (%@): %@", url, str);
+        });
+    });
+}
+
 - (void)viewAppeared:(UIViewController*)viewController {
     NSLog(@"Controller shown %@", [viewController description]);
     
@@ -247,10 +269,25 @@
     
     NSString *viewIdentifier = [parentId stringByAppendingFormat:@".%d", siblingNo];
     
+    
+    if ([parentView isKindOfClass:[UIButton class]]) {
+        // Figure out if a test has this button as a conversion goal
+        for (NSString *key in tests) {
+            NSDictionary *test = [tests objectForKey:key];
+            if ([test objectForKey:@"goal_view_id"] && [[test objectForKey:@"goal_view_id"] isEqualToString:viewIdentifier]) {
+                UIButton *button = (UIButton*)parentView;
+                [button setAction:kUIButtonBlockTouchUpInside withBlock:^{
+                    [self trackGoal:[test objectForKey:@"id"]];
+                }];
+                
+                break;
+            }
+        }
+    }
+    
     NSDictionary *test = [tests objectForKey:viewIdentifier];
     if (test) {
-        // Apply
-
+        // Apply button changes
         if ([parentView isKindOfClass:[UIButton class]]) {
             UIButton *button = (UIButton*)parentView;
             
@@ -261,6 +298,7 @@
             }
         }
         
+        // Apply label changes
         if ([parentView isKindOfClass:[UILabel class]]) {
             UILabel *label = (UILabel*)parentView;
             

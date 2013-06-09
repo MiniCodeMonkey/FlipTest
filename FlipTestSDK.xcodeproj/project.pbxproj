@@ -13,6 +13,7 @@
 		3D1E0D2617639FB300682E5A /* UIViewController+Inject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E0D2517639FB300682E5A /* UIViewController+Inject.m */; };
 		3DA70F181763DDF500F45C24 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA70F171763DDF500F45C24 /* QuartzCore.framework */; };
 		3DA70F1B176422B200F45C24 /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DA70F1A176422B200F45C24 /* UIColor+Hex.m */; };
+		3DA70F1E17643F3800F45C24 /* UIButton+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DA70F1D17643F3800F45C24 /* UIButton+Block.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +40,8 @@
 		3DA70F171763DDF500F45C24 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3DA70F19176422B200F45C24 /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
 		3DA70F1A176422B200F45C24 /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
+		3DA70F1C17643F3800F45C24 /* UIButton+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Block.h"; sourceTree = "<group>"; };
+		3DA70F1D17643F3800F45C24 /* UIButton+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Block.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +93,8 @@
 				3D1E0D2517639FB300682E5A /* UIViewController+Inject.m */,
 				3DA70F19176422B200F45C24 /* UIColor+Hex.h */,
 				3DA70F1A176422B200F45C24 /* UIColor+Hex.m */,
+				3DA70F1C17643F3800F45C24 /* UIButton+Block.h */,
+				3DA70F1D17643F3800F45C24 /* UIButton+Block.m */,
 			);
 			path = FlipTestSDK;
 			sourceTree = "<group>";
@@ -156,6 +161,7 @@
 				3D1E0D1817639C0D00682E5A /* FlipTest.m in Sources */,
 				3D1E0D2617639FB300682E5A /* UIViewController+Inject.m in Sources */,
 				3DA70F1B176422B200F45C24 /* UIColor+Hex.m in Sources */,
+				3DA70F1E17643F3800F45C24 /* UIButton+Block.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
