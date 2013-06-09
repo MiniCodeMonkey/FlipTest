@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface FlipTest : NSObject
+@interface FlipTest : NSObject {
+    NSString *flipTestUserToken;
+}
 
 + (id)currentFlipTest;
 - (void)goAhead:(NSString*)userToken;
 - (void)registerController:(UIViewController*)viewController;
 - (void)viewAppeared:(UIViewController*)viewController;
+- (NSDictionary*)testsForController:(UIViewController*)controller;
 
 @end

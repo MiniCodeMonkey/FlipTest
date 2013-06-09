@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 AngelHack. All rights reserved.
 //
 
-#import "UIViewController+Inject.h"
 #import <objc/runtime.h>
+
+#import "UIViewController+Inject.h"
 #import "FlipTest.h"
 
 @implementation UIViewController (Inject)

@@ -5,11 +5,13 @@
 //  Created by Mathias Hansen on 6/8/13.
 //  Copyright (c) 2013 AngelHack. All rights reserved.
 //
-#import <QuartzCore/QuartzCore.h>
 
 #define kApiUrl @"http://fliptest.local/api/v1/"
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "FlipTest.h"
+#import "UIColor+Hex.h"
 
 @implementation FlipTest
 
@@ -25,6 +27,57 @@
 
 - (void)goAhead:(NSString*)userToken {
     NSLog(@"FlipTest initialized with %@", userToken);
+    flipTestUserToken = userToken;
+    
+    [self updateTests];
+}
+
+- (void)updateTests {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError *error;
+        
+        NSString *url = [NSString stringWithFormat:@"%@tests", kApiUrl];
+        
+        NSURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+        
+        NSURLResponse *response;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        if (error) {
+            // handle error
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSError *jsonError;
+            NSArray *response = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:response forKey:@"fliptest_current_tests"];
+        });
+    });
+
+}
+
+- (NSDictionary*)testsForController:(UIViewController*)controller {
+    NSMutableDictionary *resultTests = [[NSMutableDictionary alloc] init];
+    
+    // Load currently running tests
+    NSArray *currentTests = [[NSUserDefaults standardUserDefaults] objectForKey:@"fliptest_current_tests"];
+    
+    // If no tests are registered, just return zero tests
+    if (!currentTests) {
+        return resultTests;
+    }
+    
+    // Find the viewcontroller's class name
+    NSString *className = [controller.class description];
+    
+    // Loop through running tests
+    for (NSDictionary *test in currentTests) {
+        if ([[test objectForKey:@"controller"] isEqualToString:className]) {
+            [resultTests setObject:test forKey:[test objectForKey:@"view_id"]];
+        }
+    }
+    
+    return resultTests;
 }
 
 - (void)registerController:(UIViewController*)viewController {
@@ -34,7 +87,7 @@
     UIView *mainView = viewController.view;
     
     if (mainView) {
-        NSDictionary *mainViewDict = [self findSubviews:mainView siblingNo:0 parentId:@""];
+        NSDictionary *mainViewDict = [self findSubviews:mainView siblingNo:0 parentId:@"0"];
         
         NSDictionary *controllerDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                         [viewController.class description], @"className",
@@ -60,7 +113,7 @@
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                NSLog(@"Return: %@", str);
+                NSLog(@"Return (%@): %@", url, str);
             });
         });
     }
@@ -68,6 +121,16 @@
 
 - (void)viewAppeared:(UIViewController*)viewController {
     NSLog(@"Controller shown %@", [viewController description]);
+    
+    UIView *mainView = viewController.view;
+    
+    if (mainView) {
+        NSDictionary *tests = [[FlipTest currentFlipTest] testsForController:viewController];
+        
+        [self runTests:tests onView:mainView siblingNo:0 parentId:@"0"];
+    }
+    
+    
     
     /*UIView *mainView = viewController.view;
     
@@ -122,6 +185,43 @@
     });
 }*/
 
+- (void)runTests:(NSDictionary*)tests onView:(UIView*)parentView siblingNo:(int)siblingNo parentId:(NSString*)parentId {
+    
+    NSString *viewIdentifier = [parentId stringByAppendingFormat:@".%d", siblingNo];
+    
+    NSDictionary *test = [tests objectForKey:viewIdentifier];
+    if (test) {
+        // Apply
+
+        if ([parentView isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton*)parentView;
+            
+            if ([[test objectForKey:@"test_type"] isEqualToString:@"text"]) {
+                [button setTitle:[test objectForKey:@"test_value"] forState:UIControlStateNormal];
+            } else {
+                button.titleLabel.textColor = [UIColor colorFromHexString: [test objectForKey:@"test_value"]];
+            }
+        }
+        
+        if ([parentView isKindOfClass:[UILabel class]]) {
+            UILabel *label = (UILabel*)parentView;
+            
+            if ([[test objectForKey:@"test_type"] isEqualToString:@"text"]) {
+                label.text = [test objectForKey:@"test_value"];
+            } else {
+                label.textColor = [UIColor colorFromHexString: [test objectForKey:@"test_value"]];
+            }
+        }
+        
+    }
+    
+    int i = 0;
+    for (UIView *subView in parentView.subviews) {
+        [self runTests:tests onView:subView siblingNo:i parentId:viewIdentifier];
+        i++;
+    }
+}
+
 - (NSDictionary*)findSubviews:(UIView*)parentView siblingNo:(int)siblingNo parentId:(NSString*)parentId {
     
     NSMutableDictionary *viewDictionary = [[NSMutableDictionary alloc] init];
@@ -143,6 +243,7 @@
     if ([parentView isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton*)parentView;
         [viewDictionary setObject:([button titleForState:UIControlStateNormal] ? [button titleForState:UIControlStateNormal] : @"") forKey:@"text"];
+        [viewDictionary setObject:((button.titleLabel && button.titleLabel.textColor) ? [button.titleLabel.textColor description] : @"") forKey:@"textColor"];
     }
     
     if ([parentView isKindOfClass:[UILabel class]]) {

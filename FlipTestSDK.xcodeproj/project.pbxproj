@@ -12,6 +12,7 @@
 		3D1E0D1817639C0D00682E5A /* FlipTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E0D1717639C0D00682E5A /* FlipTest.m */; };
 		3D1E0D2617639FB300682E5A /* UIViewController+Inject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E0D2517639FB300682E5A /* UIViewController+Inject.m */; };
 		3DA70F181763DDF500F45C24 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA70F171763DDF500F45C24 /* QuartzCore.framework */; };
+		3DA70F1B176422B200F45C24 /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DA70F1A176422B200F45C24 /* UIColor+Hex.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +37,8 @@
 		3D1E0D2417639FB300682E5A /* UIViewController+Inject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Inject.h"; sourceTree = "<group>"; };
 		3D1E0D2517639FB300682E5A /* UIViewController+Inject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Inject.m"; sourceTree = "<group>"; };
 		3DA70F171763DDF500F45C24 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		3DA70F19176422B200F45C24 /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
+		3DA70F1A176422B200F45C24 /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,8 @@
 				3D1E0D1317639C0D00682E5A /* Supporting Files */,
 				3D1E0D2417639FB300682E5A /* UIViewController+Inject.h */,
 				3D1E0D2517639FB300682E5A /* UIViewController+Inject.m */,
+				3DA70F19176422B200F45C24 /* UIColor+Hex.h */,
+				3DA70F1A176422B200F45C24 /* UIColor+Hex.m */,
 			);
 			path = FlipTestSDK;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 			files = (
 				3D1E0D1817639C0D00682E5A /* FlipTest.m in Sources */,
 				3D1E0D2617639FB300682E5A /* UIViewController+Inject.m in Sources */,
+				3DA70F1B176422B200F45C24 /* UIColor+Hex.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
