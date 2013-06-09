@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 AngelHack. All rights reserved.
 //
 
-#define kApiUrl @"http://fliptest.local/api/v1/"
+#define kApiUrl @"http://fliptest.io/api/v1/"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -218,7 +218,6 @@
     if (mainView) {
         NSDictionary *tests = [[FlipTest currentFlipTest] testsForController:viewController];
         if ([tests count] > 0) {
-            NSLog(@"%d tests for controller", [tests count]);
             for (NSString *key in tests) {
                 NSDictionary *test = [tests objectForKey:key];
                 [self trackView:[test objectForKey:@"id"]];
