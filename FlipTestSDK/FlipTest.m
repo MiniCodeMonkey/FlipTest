@@ -41,7 +41,7 @@
     return self;
 }
 
-- (void)goAhead:(NSString*)userToken {
+- (void)startFlipping:(NSString*)userToken {
     NSLog(@"FlipTest initialized with %@", userToken);
     flipTestUserToken = userToken;
     
