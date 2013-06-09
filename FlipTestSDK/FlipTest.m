@@ -52,7 +52,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSError *error;
         
-        NSString *url = [NSString stringWithFormat:@"%@tests", kApiUrl];
+        NSString *url = [NSString stringWithFormat:@"%@tests?user=%@", kApiUrl, [[[NSUserDefaults standardUserDefaults] objectForKey:@"fliptest_identifier"]]];
         
         NSURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
         
