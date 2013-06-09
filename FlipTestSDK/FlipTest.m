@@ -211,59 +211,7 @@
             [self runTests:tests onView:mainView siblingNo:0 parentId:@"0"];
         }
     }
-    
-    /*UIView *mainView = viewController.view;
-    
-    if (mainView) {
-        // View screenshot
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            CGRect rect = [mainView bounds];
-            UIGraphicsBeginImageContextWithOptions(rect.size,YES,0.0f);
-            CGContextRef context = UIGraphicsGetCurrentContext();
-            [mainView.layer renderInContext:context];
-            UIImage *capturedImage = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            
-            [self uploadImage:capturedImage name:[viewController.class description]];
-        });
-    }*/
 }
-
-/*- (void)uploadImage:(UIImage*)image name:(NSString*)name {
-    NSString *url = [NSString stringWithFormat:@"%@controller/screenshot", kApiUrl];
-    
-	NSData *imageData = UIImageJPEGRepresentation(image, 0.9);
-	
-	// setting up the request object now
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-	[request setURL:[NSURL URLWithString:url]];
-	[request setHTTPMethod:@"POST"];
-    
-	NSString *boundary = @"---------------------------14737809831466499882746641449";
-	NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-	[request addValue:contentType forHTTPHeaderField: @"Content-Type"];
-    
-	NSMutableData *body = [NSMutableData data];
-	[body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-	[body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"screenshot\"; filename=\"screenshot_1_%@.jpg\"\r\n", name] dataUsingEncoding:NSUTF8StringEncoding]];
-	[body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-	[body appendData:[NSData dataWithData:imageData]];
-	[body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-	[request setHTTPBody:body];
-	
-	NSError *error;
-    
-    NSURLResponse *response;
-    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    if (error) {
-        // handle error
-        return;
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"Return: %@", str);
-    });
-}*/
 
 - (void)runTests:(NSDictionary*)tests onView:(UIView*)parentView siblingNo:(int)siblingNo parentId:(NSString*)parentId {
     
