@@ -28,6 +28,13 @@
 - (id)init {
     if (self = [super init]) {
         registeredControllers = [[NSMutableArray alloc] init];
+        
+        // Generate unique id if necessary
+        if (![[NSUserDefaults standardUserDefaults] objectForKey:@"fliptest_identifier"]) {
+            NSUUID  *UUID = [NSUUID UUID];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[UUID UUIDString] forKey:@"fliptest_identifier"];
+        }
     }
     
     return self;
@@ -145,6 +152,27 @@
     }
 }
 
+- (void)trackView:(NSString*)testId {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError *error;
+        
+        NSString *url = [NSString stringWithFormat:@"%@tests/%@/view?user=%@", kApiUrl, testId, [[[NSUserDefaults standardUserDefaults] objectForKey:@"fliptest_identifier"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+        
+        NSURLResponse *response;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        if (error) {
+            // handle error
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"Return (%@): %@", url, str);
+        });
+    });
+}
+
 - (void)viewAppeared:(UIViewController*)viewController {
     NSLog(@"Controller shown %@", [viewController description]);
     
@@ -153,6 +181,11 @@
     if (mainView) {
         NSDictionary *tests = [[FlipTest currentFlipTest] testsForController:viewController];
         if ([tests count] > 0) {
+            for (NSString *key in tests) {
+                NSDictionary *test = [tests objectForKey:key];
+                [self trackView:[test objectForKey:@"id"]];
+            }
+            
             [self runTests:tests onView:mainView siblingNo:0 parentId:@"0"];
         }
     }
