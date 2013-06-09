@@ -11,6 +11,7 @@
 
 @interface FlipTest : NSObject {
     NSString *flipTestUserToken;
+    NSMutableArray *registeredControllers;
 }
 
 + (id)currentFlipTest;

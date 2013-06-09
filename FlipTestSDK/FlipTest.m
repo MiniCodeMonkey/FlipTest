@@ -25,6 +25,14 @@
     return sharedInstance;
 }
 
+- (id)init {
+    if (self = [super init]) {
+        registeredControllers = [[NSMutableArray alloc] init];
+    }
+    
+    return self;
+}
+
 - (void)goAhead:(NSString*)userToken {
     NSLog(@"FlipTest initialized with %@", userToken);
     flipTestUserToken = userToken;
@@ -51,6 +59,19 @@
             NSArray *response = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
             
             [[NSUserDefaults standardUserDefaults] setObject:response forKey:@"fliptest_current_tests"];
+            
+            // Apply changes
+            for (UIViewController *viewController in registeredControllers) {
+                UIView *mainView = viewController.view;
+                
+                if (mainView) {
+                    NSDictionary *tests = [[FlipTest currentFlipTest] testsForController:viewController];
+                    
+                    if ([tests count] > 0) {
+                        [self runTests:tests onView:mainView siblingNo:0 parentId:@"0"];
+                    }
+                }
+            }
         });
     });
 
@@ -82,6 +103,11 @@
 
 - (void)registerController:(UIViewController*)viewController {
     NSLog(@"New controller %@", [viewController description]);
+    
+    // Store controllers
+    if (![registeredControllers containsObject:viewController]) {
+        [registeredControllers addObject:viewController];
+    }
     
     // Existing controllers    
     UIView *mainView = viewController.view;
@@ -126,11 +152,10 @@
     
     if (mainView) {
         NSDictionary *tests = [[FlipTest currentFlipTest] testsForController:viewController];
-        
-        [self runTests:tests onView:mainView siblingNo:0 parentId:@"0"];
+        if ([tests count] > 0) {
+            [self runTests:tests onView:mainView siblingNo:0 parentId:@"0"];
+        }
     }
-    
-    
     
     /*UIView *mainView = viewController.view;
     
